@@ -1,7 +1,7 @@
 module.exports = {
   apps : [{
-    name: 'API',
-    script: 'app.js',
+    name: 'backend',
+    script: 'npm start',
 
     // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
     args: 'one two',
@@ -19,7 +19,7 @@ module.exports = {
 
   deploy : {
     production : {
-      user : 'node',
+      user : 'ubuntu',
       host : '54.209.21.181',    
       ref  : 'origin/master',
       repo : 'https://github.com/kvigneshvaran99/messenger-back.git',
