@@ -9,7 +9,7 @@ var cors=require("cors");
 app.use(cors());
 app.use(bodyParser());
 var onlineUsers=[];
-app.post("/usercheck",async function(req,res){
+app.post("backend/usercheck",async function(req,res){
     let user=await model.user.findOne({
         where:{
            username:req.body.username
@@ -58,7 +58,7 @@ async function getMessages(userData,id){
    
 }
 
-app.post("/getAllUsers",async function(req,res){
+app.post("backend/getAllUsers",async function(req,res){
     let userData=await model.user.findAll({
         attributes : ['id','username']
     })
@@ -68,7 +68,7 @@ app.post("/getAllUsers",async function(req,res){
     res.json({"data":data,"online":onlineUsers})
 })
 
-app.post("/allmessages", async function(req,res){
+app.post("backend/allmessages", async function(req,res){
     let allmessages=await model.message.findAll({
        where:{
            [Op.or]:[{recieversId:req.body.id1,sendersId:req.body.id2},{recieversId:req.body.id2,sendersId:req.body.id1}]
