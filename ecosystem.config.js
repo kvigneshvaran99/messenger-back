@@ -24,7 +24,7 @@ module.exports = {
       ref  : 'origin/master',
       repo : 'https://github.com/kvigneshvaran99/messenger-back.git',
       path : '/var/www/production-back',
-      'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
+      'post-deploy' : 'npm install && npx sequelize-cli db:migrate --env production && pm2 reload ecosystem.config.js --env production'
     }
   }
 };
