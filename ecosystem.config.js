@@ -20,10 +20,10 @@ module.exports = {
   deploy : {
     production : {
       user : 'node',
-      host : '212.83.163.1',    
+      host : '54.209.21.181',    
       ref  : 'origin/master',
-      repo : 'git@github.com:repo.git',
-      path : '/var/www/production',
+      repo : 'git@github.com:kvigneshvaran99/messenger-back.git',
+      path : '/var/www/production-back',
       'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
     }
   }
