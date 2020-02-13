@@ -9,8 +9,7 @@ var cors=require("cors");
 app.use(cors());
 app.use(bodyParser());
 var onlineUsers=[];
- 
-app.post("/backend/usercheck",async function(req,res){
+app.post("/usercheck",async function(req,res){
     let user=await model.user.findOne({
         where:{
            username:req.body.username
@@ -59,7 +58,7 @@ async function getMessages(userData,id){
    
 }
 
-app.post("/backend/getAllUsers",async function(req,res){
+app.post("/getAllUsers",async function(req,res){
     let userData=await model.user.findAll({
         attributes : ['id','username']
     })
@@ -69,7 +68,7 @@ app.post("/backend/getAllUsers",async function(req,res){
     res.json({"data":data,"online":onlineUsers})
 })
 
-app.post("/backend/allmessages", async function(req,res){
+app.post("/allmessages", async function(req,res){
     let allmessages=await model.message.findAll({
        where:{
            [Op.or]:[{recieversId:req.body.id1,sendersId:req.body.id2},{recieversId:req.body.id2,sendersId:req.body.id1}]
@@ -99,23 +98,26 @@ try{
         console.log('.....',name);
         var flag=0;
        let nsp= io.of(name).on('connection',function(socket){
+        console.log("connected",name);
         for(let i=0;i<onlineUsers.length;i++){
             if(onlineUsers[i]===name){
                 flag=1;
             }
         }
         if(flag!==1){
-            console.log("connected",name);
+            // console.log("connected",name);
             onlineUsers.push(name);
             console.log(  'onlineUsers',onlineUsers);
         }
         socket.on('front to back',async function(data){
             console.log(data);
+           
             let newMessage=await model.message.create({"message":data.message,"sendersId":data.from.id,"recieversId":data.to.id})
             socketObj[data.to.username].emit('back to front',newMessage)
         })
         socket.on('delete req',async function(data){
-            console.log(data);
+            console.log("d",data.id);
+            
             await model.message.destroy({
                 where:{id:data.id}
             })
