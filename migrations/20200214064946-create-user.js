@@ -14,6 +14,15 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
+      userDp: {
+        type: Sequelize.TEXT
+      },
+      status: {
+        type: Sequelize.BOOLEAN
+      },
+      lastLoggedIn: {
+        type: Sequelize.DATE
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

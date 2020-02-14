@@ -9,7 +9,7 @@ var cors=require("cors");
 app.use(cors());
 app.use(bodyParser());
 var onlineUsers=[];
-app.post("/backend/usercheck",async function(req,res){
+app.post("/usercheck",async function(req,res){
     let user=await model.user.findOne({
         where:{
            username:req.body.username
