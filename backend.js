@@ -11,21 +11,25 @@ app.use(cors());
 app.use(bodyParser());
 var onlineUsers=[];
 app.post("/usercheck",async function(req,res){
+    const {username, password} = req.body
     let user=await model.user.findOne({
         where:{
-           username:req.body.username
-        }
+           username:username
+        },
+        attributes:["username", "password", "email"]
     })
     if(user===null){
         console.log(user)
         res.send({loggedIn:false});
     }
-    else if(user.dataValues.password===req.body.password){
-        res.json({loggedIn:true,username:user.dataValues.username,id:user.dataValues.id});
-        getSocketObj();
-    }
+    // else if(user.dataValues.password===req.body.password){
+    //     res.json({loggedIn:true,username:user.dataValues.username,id:user.dataValues.id});
+    //     getSocketObj();
+    // }
     else{
-        res.send({loggedIn:false});
+        // res.send({loggedIn:false});
+        res.send(user)
+        console.log(user)
     }
 })
 
@@ -137,18 +141,17 @@ catch(err){
 app.post("/signup", async function(req,res) {
     const {email, username, password, dp} = req.body
     var hash = bcrypt.hashSync(password, 10)
-    let users = await model.users.create({
+    let users = await model.user.create({
         email: email,
         username: username,
         password: hash,
-        dp: dp,
+        userDp: dp,
         status: false,
         lastLoggedIn: new Date()
     }).then(
-        res.send("Success")
+       res.send("Success")
     )
 })
-
 
 
 server.listen(8080);
