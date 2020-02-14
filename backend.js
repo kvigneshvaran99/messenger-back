@@ -5,6 +5,7 @@ var model=require("./models");
 const Op = require('sequelize').Op;
 var bodyParser=require("body-parser");
 var cors=require("cors");
+var bcrypt = require("bcryptjs")
 
 app.use(cors());
 app.use(bodyParser());
@@ -133,6 +134,20 @@ catch(err){
     console.log(err);
 }
 }
+app.post("/signup", async function(req,res) {
+    const {email, username, password, dp} = req.body
+    var hash = bcrypt.hashSync(password, 10)
+    let users = await model.users.create({
+        email: email,
+        username: username,
+        password: hash,
+        dp: dp,
+        status: false,
+        lastLoggedIn: new Date()
+    }).then(
+        res.send("Success")
+    )
+})
 
 
 
