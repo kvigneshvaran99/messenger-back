@@ -16,6 +16,7 @@ app.post("/backend/usercheck",async function(req,res){
         }
     })
     if(user===null){
+        console.log(user)
         res.send({loggedIn:false});
     }
     else if(user.dataValues.password===req.body.password){
